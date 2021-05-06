@@ -1,7 +1,6 @@
 .completed {
   text-decoration: line-through solid rgb(0, 0, 0);
 }
-#apaga-tudo {
+#botoes-apagar {
   margin-top: 25px;
-  display: block;
 }

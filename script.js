@@ -66,6 +66,20 @@ function eventoApagaTudo(olTarefas){
   }
   });
 }
+
+// apaga itens finalizados da lista
+function eventoApagaFinalizados(olTarefas){
+  // acessa elemento <button id='remover-finalizados'>Apagar
+  let btnApagaFinalizados = document.querySelector('#remover-finalizados');
+  btnApagaFinalizados.addEventListener('click', () => {
+  // acessa lista de tarefas finalizadas
+  let tarefas = olTarefas.querySelectorAll('.completed');
+  for(let tarefa of tarefas){
+    olTarefas.removeChild(tarefa);
+  }
+  });
+}
+
 // garante que o html estará carregado
 window.onload = () => {
   // acessa elemento <ol id='lista-tarefas'></ol>
@@ -74,4 +88,5 @@ window.onload = () => {
   eventoDeSelecaoDeItemDaLista(olTarefas);
   eventoDeMarcacaoDeItemDaLista(olTarefas);
   eventoApagaTudo(olTarefas);
+  eventoApagaFinalizados(olTarefas)
 }
