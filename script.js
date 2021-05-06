@@ -54,11 +54,24 @@ function eventoDeMarcacaoDeItemDaLista(olTarefas) {
     }
   });
 }
+// apaga todos os itens da lista
+function eventoApagaTudo(olTarefas){
+  // acessa elemento <button id='apaga-tudo'></button>
+  let btnApagaTudo = document.querySelector('#apaga-tudo');
+  btnApagaTudo.addEventListener('click', () => {
+  // acessa lista de tarefas
+  let tarefas = olTarefas.querySelectorAll('.tarefa');
+  for(let tarefa of tarefas){
+    olTarefas.removeChild(tarefa);
+  }
+  });
+}
 // garante que o html estará carregado
 window.onload = () => {
   // acessa elemento <ol id='lista-tarefas'></ol>
   let olTarefas = document.querySelector('#lista-tarefas');
   addTarefa(olTarefas);
   eventoDeSelecaoDeItemDaLista(olTarefas);
-  eventoDeMarcacaoDeItemDaLista(olTarefas)
+  eventoDeMarcacaoDeItemDaLista(olTarefas);
+  eventoApagaTudo(olTarefas);
 }
