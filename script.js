@@ -155,10 +155,27 @@ function eventoMoverCima(olTarefas) {
       }
     }
     // se o próximo elemento for diferente de nulo, subistitua
-    console.log(elementSelected)
     if(elementSelected.previousElementSibling != null){
       elementSelected.after(elementSelected.previousElementSibling);
     }
+  });
+}
+
+function eventoRemoverTarefaSelecionada(olTarefas) {
+  // acessa elemento <button id='remover-selecionado'>Remover Tarefa Selecionada</button>
+  btnRemoverTarefaSelecionada = document.querySelector('#remover-selecionado');
+  // adiciona evento de click
+  btnRemoverTarefaSelecionada.addEventListener('click', () => {
+    // acessa lista de tarefas
+    let tarefas = olTarefas.querySelectorAll('.tarefa');
+    // acessa elemento selecionado
+    for(let tarefa of tarefas) {
+      if(tarefa.classList.contains('selected')){
+        olTarefas.removeChild(tarefa);
+        break;
+      }
+    }
+    
   });
 }
 
@@ -174,5 +191,6 @@ window.onload = () => {
   eventoApagaFinalizados(olTarefas);
   eventoSalvarTarefas(olTarefas);
   eventoMoverBaixo(olTarefas);
-  eventoMoverCima(olTarefas)
+  eventoMoverCima(olTarefas);
+  eventoRemoverTarefaSelecionada(olTarefas);
 }
