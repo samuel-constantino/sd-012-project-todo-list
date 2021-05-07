@@ -124,22 +124,6 @@ function eventoSalvarTarefas(olTarefas) {
 }
 // move o elemento selecionado para baixo
 function eventoMoverBaixo(olTarefas) {
-  // acessa elemento <button id='mover-baixo'>Mover p/ Baixo</button>
-  // btnMoverBaixo = document.querySelector('#mover-baixo');
-  // btnMoverBaixo.addEventListener('click', () => {
-  //   // acessa lista de tarefas
-  //   let tarefas = olTarefas.getElementsByTagName('li');
-  //   // identifica qual elemento é o selecionado
-  //   let elementSelected;
-  //   for(let tarefa of tarefas) {
-  //     if(tarefa.classList.contains('selected')){
-  //       elementSelected = tarefa;
-  //     }
-  //   }
-  //   console.log(elementSelected.nextElementSibling)
-  // });
-
-  // acessa elemento <button id='mover-baixo'>Mover p Baixo</button>
   btnMoverBaixo = document.querySelector('#mover-baixo');
   btnMoverBaixo.addEventListener('click', () => {
     // acessa lista de tarefas
