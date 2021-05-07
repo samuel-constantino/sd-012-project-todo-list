@@ -141,6 +141,27 @@ function eventoMoverBaixo(olTarefas) {
     }
   });
 }
+
+function eventoMoverCima(olTarefas) {
+  btnMoverCima = document.querySelector('#mover-cima');
+  btnMoverCima.addEventListener('click', () => {
+    // acessa lista de tarefas
+    let tarefas = olTarefas.getElementsByTagName('li');
+    // identifica qual elemento é o selecionado
+    let elementSelected;
+    for(let tarefa of tarefas) {
+      if(tarefa.classList.contains('selected')){
+        elementSelected = tarefa;
+      }
+    }
+    // se o próximo elemento for diferente de nulo, subistitua
+    console.log(elementSelected)
+    if(elementSelected.previousElementSibling != null){
+      elementSelected.after(elementSelected.previousElementSibling);
+    }
+  });
+}
+
 // garante que o html estará carregado
 window.onload = () => {
   // acessa elemento <ol id='lista-tarefas'></ol>
@@ -153,4 +174,5 @@ window.onload = () => {
   eventoApagaFinalizados(olTarefas);
   eventoSalvarTarefas(olTarefas);
   eventoMoverBaixo(olTarefas);
+  eventoMoverCima(olTarefas)
 }
