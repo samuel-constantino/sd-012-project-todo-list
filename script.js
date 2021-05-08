@@ -1,22 +1,19 @@
+// acessa elemento <ol id='lista-tarefas'></ol>
+let olTarefas = document.querySelector('#lista-tarefas');
+
 // verifica se há itens salvos no localStorage
-function verificaTarefasSalvas(olTarefas) {
+function verificaTarefasSalvas() {
   // se a lista armazenada não estiver vazia
   if (localStorage.getItem('lista') != null && localStorage.getItem('classes') != null) {
-    // acessa lista em formato de string
-    const listaEmString = localStorage.getItem('lista');
-    // acessa classes em formato de string
-    const classesEmString = localStorage.getItem('classes');
     // converte a lista para array
-    let lista = listaEmString.split(',');
+    let lista = localStorage.getItem('lista').split(',');
     // converte classes para array
-    let classes = classesEmString.split(',');
+    let classes = localStorage.getItem('classes').split(',');
     // popular a lista de tarefas
     for (let key in lista) {
       // cria elemento <li>
       let tarefa = document.createElement('li');
-      //  adiciona classe 'tarefa'
       tarefa.className = classes[key];
-      // adiciona conteudo
       tarefa.innerHTML = lista[key];
       // adiciona tarefa na lista
       olTarefas.appendChild(tarefa);
@@ -25,7 +22,7 @@ function verificaTarefasSalvas(olTarefas) {
 
 }
 // adiciona nova tarefa à lista
-function addTarefa(olTarefas) {
+function addTarefa() {
   // acessa elemento <button id='criar-tarefa'>Criar</button>
   const btnCriarTarefa = document.querySelector('#criar-tarefa');
   // adiciona evento de click ao botão
@@ -45,7 +42,7 @@ function addTarefa(olTarefas) {
   });
 }
 
-function eventoDeSelecaoDeItemDaLista(olTarefas) {
+function eventoDeSelecaoDeItemDaLista() {
   olTarefas.addEventListener('click', (event) => {
     // se o alvo clicado for uma tarefa
     if (event.target.classList.contains('tarefa')) {
@@ -67,7 +64,7 @@ function eventoDeSelecaoDeItemDaLista(olTarefas) {
   });
 }
 
-function eventoDeMarcacaoDeItemDaLista(olTarefas) {
+function eventoDeMarcacaoDeItemDaLista() {
   olTarefas.addEventListener('dblclick', (event) => {
     // se o alvo for uma tarefa
     if (event.target.classList.contains('tarefa')) {
@@ -81,7 +78,7 @@ function eventoDeMarcacaoDeItemDaLista(olTarefas) {
   });
 }
 // apaga todos os itens da lista
-function eventoApagaTudo(olTarefas) {
+function eventoApagaTudo() {
   // acessa elemento <button id='apaga-tudo'></button>
   let btnApagaTudo = document.querySelector('#apaga-tudo');
   btnApagaTudo.addEventListener('click', () => {
@@ -94,7 +91,7 @@ function eventoApagaTudo(olTarefas) {
 }
 
 // apaga itens finalizados da lista
-function eventoApagaFinalizados(olTarefas) {
+function eventoApagaFinalizados() {
   // acessa elemento <button id='remover-finalizados'>Apagar
   let btnApagaFinalizados = document.querySelector('#remover-finalizados');
   btnApagaFinalizados.addEventListener('click', () => {
@@ -106,7 +103,7 @@ function eventoApagaFinalizados(olTarefas) {
   });
 }
 
-function eventoSalvarTarefas(olTarefas) {
+function eventoSalvarTarefas() {
   // acessa elemento <button id='salvar-tarefas'></button>
   btnSalvarTarefas = document.querySelector('#salvar-tarefas');
   btnSalvarTarefas.addEventListener('click', () => {
@@ -122,8 +119,9 @@ function eventoSalvarTarefas(olTarefas) {
     alert('Tarefa salva!');
   });
 }
+
 // move o elemento selecionado para baixo
-function eventoMoverBaixo(olTarefas) {
+function eventoMoverBaixo() {
   btnMoverBaixo = document.querySelector('#mover-baixo');
   btnMoverBaixo.addEventListener('click', () => {
     // acessa lista de tarefas
@@ -146,7 +144,7 @@ function eventoMoverBaixo(olTarefas) {
   });
 }
 
-function eventoMoverCima(olTarefas) {
+function eventoMoverCima() {
   btnMoverCima = document.querySelector('#mover-cima');
   btnMoverCima.addEventListener('click', () => {
     // acessa lista de tarefas
@@ -168,7 +166,7 @@ function eventoMoverCima(olTarefas) {
   });
 }
 
-function eventoRemoverTarefaSelecionada(olTarefas) {
+function eventoRemoverTarefaSelecionada() {
   // acessa elemento <button id='remover-selecionado'>Remover Tarefa Selecionada</button>
   btnRemoverTarefaSelecionada = document.querySelector('#remover-selecionado');
   // adiciona evento de click
@@ -186,18 +184,18 @@ function eventoRemoverTarefaSelecionada(olTarefas) {
   });
 }
 
-// garante que o html estará carregado
+verificaTarefasSalvas();
+addTarefa();
+eventoDeSelecaoDeItemDaLista();
+eventoDeMarcacaoDeItemDaLista();
+eventoApagaTudo();
+eventoApagaFinalizados();
+eventoSalvarTarefas();
+eventoMoverBaixo();
+eventoMoverCima();
+eventoRemoverTarefaSelecionada();
+
+// ao carregar todo HTML
 window.onload = () => {
-  // acessa elemento <ol id='lista-tarefas'></ol>
-  let olTarefas = document.querySelector('#lista-tarefas');
-  verificaTarefasSalvas(olTarefas);
-  addTarefa(olTarefas);
-  eventoDeSelecaoDeItemDaLista(olTarefas);
-  eventoDeMarcacaoDeItemDaLista(olTarefas);
-  eventoApagaTudo(olTarefas);
-  eventoApagaFinalizados(olTarefas);
-  eventoSalvarTarefas(olTarefas);
-  eventoMoverBaixo(olTarefas);
-  eventoMoverCima(olTarefas);
-  eventoRemoverTarefaSelecionada(olTarefas);
+
 }
