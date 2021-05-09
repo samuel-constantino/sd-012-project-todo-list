@@ -1,13 +1,13 @@
-// verifica se há lista salva no localStorage
-window.onload = () => {
-  const tarefasSalvas = localStorage.getItem('tarefas-salvas');
-  olTarefas.innerHTML = tarefasSalvas;
-}
-
 // acessa input de tarefas
 const inputText = document.querySelector('#texto-tarefa');
 // acessa lista de tarefas
 const olTarefas = document.querySelector('#lista-tarefas');
+
+// verifica se há lista salva no localStorage
+window.onload = () => {
+  const tarefasSalvas = localStorage.getItem('tarefas-salvas');
+  olTarefas.innerHTML = tarefasSalvas;
+};
 
 // adiciona tarefas
 const addTarefa = () => {
@@ -29,7 +29,7 @@ const selecionaTarefa = (event) => {
   const tarefas = document.querySelectorAll('.tarefa');
   for (let tarefa of tarefas) {
     tarefa.classList.remove('selected');
-    event.target.style.backgroundColor = '';
+    tarefa.style.backgroundColor = '';
   }
   event.target.classList.add('selected');
   event.target.style.backgroundColor = 'rgb(128, 128, 128)';
@@ -115,18 +115,25 @@ const listenerClick = (event) => {
     // se não, se o id for 'salvar-tarefas', salve tudo!
     salvaListaAtual();
   } else if (event.target.id === 'mover-cima') {
+    // se não, se o id for 'mover-cima', mova a tarefa selecionada para cima
     moveParaCima();
   } else if (event.target.id === 'mover-baixo') {
+    // se não, se o id for 'mover-baixo', mova a tarefa selecionada para baixo
     moveParaBaixo();
   } else if (event.target.id === 'remover-selecionado') {
+    // se não, se o id for 'remover-selecionado, remova a tarefa selecionada
     removeTarefaSelecionada();
+  } else if (event.target.id === 'apaga-tudo') {
+    // se não, se o id for 'apaga-tudo', apague todas as tarefas
+    apagaTudo();
   } else if (event.target.classList.contains('tarefa')) {
+    // se não, se a classe for 'tarefa', selecione o alvo
     selecionaTarefa(event);
   } else {
     // se não, descarte este evento
     event.target.removeEventListener('click', listenerClick);
   }
-}
+};
 // declaração para eventos de click
 document.addEventListener('click', listenerClick);
 
@@ -140,7 +147,7 @@ const listenerDoubleClick = (event) => {
     // se não, descarte este evento
     event.target.removeEventListener('click', listenerDoubleClick);
   }
-}
+};
 // declaração para eventos de duplo click
 document.addEventListener('dblclick', listenerDoubleClick);
 
