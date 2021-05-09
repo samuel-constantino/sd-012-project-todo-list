@@ -1,201 +1,154 @@
-// acessa elemento <ol id='lista-tarefas'></ol>
-let olTarefas = document.querySelector('#lista-tarefas');
-
-// verifica se há itens salvos no localStorage
-function verificaTarefasSalvas() {
-  // se a lista armazenada não estiver vazia
-  if (localStorage.getItem('lista') != null && localStorage.getItem('classes') != null) {
-    // converte a lista para array
-    let lista = localStorage.getItem('lista').split(',');
-    // converte classes para array
-    let classes = localStorage.getItem('classes').split(',');
-    // popular a lista de tarefas
-    for (let key in lista) {
-      // cria elemento <li>
-      let tarefa = document.createElement('li');
-      tarefa.className = classes[key];
-      tarefa.innerHTML = lista[key];
-      // adiciona tarefa na lista
-      olTarefas.appendChild(tarefa);
-    }
-  }
-
-}
-// adiciona nova tarefa à lista
-function addTarefa() {
-  // acessa elemento <button id='criar-tarefa'>Criar</button>
-  const btnCriarTarefa = document.querySelector('#criar-tarefa');
-  // adiciona evento de click ao botão
-  btnCriarTarefa.addEventListener('click', () => {
-    // acessa valor do elemento <input type='text' id='texto-tarefa'>
-    let inputTextoTarefa = document.querySelector('#texto-tarefa').value;
-    // cria elemento <li>
-    let liTarefa = document.createElement('li');
-    // adiciona classe ao <li>
-    liTarefa.className = 'tarefa';
-    // adiciona texto do input ao <li>
-    liTarefa.innerHTML = inputTextoTarefa;
-    // adiciono liTarefa como filho da lista ordenada
-    olTarefas.appendChild(liTarefa);
-    // remove texto do input
-    document.querySelector('#texto-tarefa').value = '';
-  });
-}
-
-function eventoDeSelecaoDeItemDaLista() {
-  olTarefas.addEventListener('click', (event) => {
-    // se o alvo clicado for uma tarefa
-    if (event.target.classList.contains('tarefa')) {
-      // remove classe 'selected' do item anterior
-      let tarefaSelecionadaAnterior = olTarefas.querySelector('.selected');
-      // se for a primeira seleção
-      if (tarefaSelecionadaAnterior != null) {
-        tarefaSelecionadaAnterior.classList.remove('selected');
-      }
-      // seleciona o alvo
-      event.target.classList.add('selected');
-      // adiciona fundo branco em todos itens
-      for (let tarefa of olTarefas.querySelectorAll('.tarefa')) {
-        tarefa.style.backgroundColor = 'rgb(255, 255, 255)';
-      }
-      // destaca item selecionado
-      event.target.style.backgroundColor = 'rgb(128, 128, 128)';
-    }
-  });
-}
-
-function eventoDeMarcacaoDeItemDaLista() {
-  olTarefas.addEventListener('dblclick', (event) => {
-    // se o alvo for uma tarefa
-    if (event.target.classList.contains('tarefa')) {
-      // verificar se tarefa está completa
-      if (event.target.classList.contains('completed')) {
-        event.target.classList.remove('completed');
-      } else {
-        event.target.classList.add('completed');
-      }
-    }
-  });
-}
-// apaga todos os itens da lista
-function eventoApagaTudo() {
-  // acessa elemento <button id='apaga-tudo'></button>
-  let btnApagaTudo = document.querySelector('#apaga-tudo');
-  btnApagaTudo.addEventListener('click', () => {
-    // acessa lista de tarefas
-    let tarefas = olTarefas.querySelectorAll('.tarefa');
-    for (let tarefa of tarefas) {
-      olTarefas.removeChild(tarefa);
-    }
-  });
-}
-
-// apaga itens finalizados da lista
-function eventoApagaFinalizados() {
-  // acessa elemento <button id='remover-finalizados'>Apagar
-  let btnApagaFinalizados = document.querySelector('#remover-finalizados');
-  btnApagaFinalizados.addEventListener('click', () => {
-    // acessa lista de tarefas finalizadas
-    let tarefas = olTarefas.querySelectorAll('.completed');
-    for (let tarefa of tarefas) {
-      olTarefas.removeChild(tarefa);
-    }
-  });
-}
-
-function eventoSalvarTarefas() {
-  // acessa elemento <button id='salvar-tarefas'></button>
-  btnSalvarTarefas = document.querySelector('#salvar-tarefas');
-  btnSalvarTarefas.addEventListener('click', () => {
-    let tarefas = olTarefas.querySelectorAll('.tarefa');
-    let lista = [];
-    let classes = [];
-    for (let tarefa of tarefas) {
-      lista.push(tarefa.innerHTML);
-      classes.push(tarefa.classList.value)
-    }
-    localStorage.setItem('lista', lista);
-    localStorage.setItem('classes', classes);
-    alert('Tarefa salva!');
-  });
-}
-
-// move o elemento selecionado para baixo
-function eventoMoverBaixo() {
-  btnMoverBaixo = document.querySelector('#mover-baixo');
-  btnMoverBaixo.addEventListener('click', () => {
-    // acessa lista de tarefas
-    let tarefas = olTarefas.getElementsByTagName('li');
-    // identifica qual elemento é o selecionado
-    let elementSelected;
-    for (let tarefa of tarefas) {
-      if (tarefa.classList.contains('selected')) {
-        elementSelected = tarefa;
-      }
-    }
-    // se houver um item selecionado
-    if (elementSelected != undefined) {
-      // se o próximo elemento for diferente de nulo, subistitua
-      if (elementSelected.nextElementSibling != null) {
-        olTarefas.insertBefore(elementSelected.nextElementSibling, elementSelected);
-      }
-    }
-
-  });
-}
-
-function eventoMoverCima() {
-  btnMoverCima = document.querySelector('#mover-cima');
-  btnMoverCima.addEventListener('click', () => {
-    // acessa lista de tarefas
-    let tarefas = olTarefas.getElementsByTagName('li');
-    // identifica qual elemento é o selecionado
-    let elementSelected;
-    for (let tarefa of tarefas) {
-      if (tarefa.classList.contains('selected')) {
-        elementSelected = tarefa;
-      }
-    }
-    // se houver um item selecionado
-    if (elementSelected != undefined) {
-      // se o próximo elemento for diferente de nulo, subistitua
-      if (elementSelected.previousElementSibling != null) {
-        elementSelected.after(elementSelected.previousElementSibling);
-      }
-    }
-  });
-}
-
-function eventoRemoverTarefaSelecionada() {
-  // acessa elemento <button id='remover-selecionado'>Remover Tarefa Selecionada</button>
-  btnRemoverTarefaSelecionada = document.querySelector('#remover-selecionado');
-  // adiciona evento de click
-  btnRemoverTarefaSelecionada.addEventListener('click', () => {
-    // acessa lista de tarefas
-    let tarefas = olTarefas.querySelectorAll('.tarefa');
-    // acessa elemento selecionado
-    for (let tarefa of tarefas) {
-      if (tarefa.classList.contains('selected')) {
-        olTarefas.removeChild(tarefa);
-        break;
-      }
-    }
-
-  });
-}
-
-verificaTarefasSalvas();
-addTarefa();
-eventoDeSelecaoDeItemDaLista();
-eventoDeMarcacaoDeItemDaLista();
-eventoApagaTudo();
-eventoApagaFinalizados();
-eventoSalvarTarefas();
-eventoMoverBaixo();
-eventoMoverCima();
-eventoRemoverTarefaSelecionada();
-
-// ao carregar todo HTML
+// verifica se há lista salva no localStorage
 window.onload = () => {
-
+  const tarefasSalvas = localStorage.getItem('tarefas-salvas');
+  olTarefas.innerHTML = tarefasSalvas;
 }
+
+// acessa input de tarefas
+const inputText = document.querySelector('#texto-tarefa');
+// acessa lista de tarefas
+const olTarefas = document.querySelector('#lista-tarefas');
+
+// adiciona tarefas
+const addTarefa = () => {
+  // cria nova tarefa
+  const newLi = document.createElement('li');
+  // adiciona texto do input
+  newLi.innerText = inputText.value;
+  // adiciona classe 'tarefa' novo elemento
+  newLi.className = 'tarefa';
+  // adiciona nova tarefa na lista
+  olTarefas.appendChild(newLi);
+  // limpa texto do input
+  inputText.value = '';
+};
+
+// seleciona tarefa
+const selecionaTarefa = (event) => {
+  // acessa lista de tarefas
+  const tarefas = document.querySelectorAll('.tarefa');
+  for (let tarefa of tarefas) {
+    tarefa.classList.remove('selected');
+    event.target.style.backgroundColor = '';
+  }
+  event.target.classList.add('selected');
+  event.target.style.backgroundColor = 'rgb(128, 128, 128)';
+};
+
+// risca tarefas completas
+const riscaTarefa = (event) => {
+  // se o alvo do evento tiver a classe 'completed'
+  if (event.target.classList.contains('completed')) {
+    // remova a classe 'completed'
+    event.target.classList.remove('completed');
+  } else {
+    // se não adicione a classe 'completed'
+    event.target.classList.add('completed');
+  }
+};
+
+// apaga tudo
+const apagaTudo = () => {
+  // substitui conteúdo da lista por uma string vazia
+  olTarefas.innerHTML = '';
+  // limpa armazenamento local (localStorage)
+  localStorage.clear();
+};
+
+// Apaga tarefas completas
+const apagaTarefasCompletas = () => {
+  // acessa a tarefa com classe 'completed'
+  const tarefasCompletas = document.querySelectorAll('.completed');
+  for (let tarefaCompleta of tarefasCompletas) {
+    tarefaCompleta.remove();
+  }
+};
+
+// salva lista atual
+const salvaListaAtual = () => {
+  localStorage.setItem('tarefas-salvas', olTarefas.innerHTML);
+  alert('Lista Salva!')
+};
+
+// acessa tarefa selecionada
+const tarefaSelecionada = () => {
+  const tarefaSelecionada = document.querySelector('.selected');
+  return tarefaSelecionada;
+};
+
+// Move tarefa selecionada para cima
+const moveParaCima = () => {
+  // se tarefa selecionada e a anterior dela existirem
+  if (tarefaSelecionada() !== null && tarefaSelecionada().previousElementSibling !== null) {
+    // troque elas de lugar
+    tarefaSelecionada().after(tarefaSelecionada().previousElementSibling);
+  }
+};
+
+// Move tarefa selecionada para baixo
+const moveParaBaixo = () => {
+  // se tarefa selecionada e a próxima existirem
+  if (tarefaSelecionada() !== null && tarefaSelecionada().nextElementSibling !== null) {
+    // troque elas de lugar
+    tarefaSelecionada().after(tarefaSelecionada().nextElementSibling, tarefaSelecionada());
+  }
+};
+
+// remove tarefa selecionada
+const removeTarefaSelecionada = () => {
+  tarefaSelecionada().remove();
+};
+
+// função para evento de click
+const listenerClick = (event) => {
+  // se o alvo do click for elementos com id 'criar-tarefas'
+  if (event.target.id === 'criar-tarefa') {
+    // adiciona tarefa
+    addTarefa();
+  } else if (event.target.id === 'remover-tudo') {
+    // se não, se o id for 'remover-tudo', apague tudo!
+    apagaTudo();
+  } else if (event.target.id === 'remover-finalizados') {
+    // se não, se o id for 'remover-finalizados', remova tarefas completas!
+    apagaTarefasCompletas();
+  } else if (event.target.id === 'salvar-tarefas') {
+    // se não, se o id for 'salvar-tarefas', salve tudo!
+    salvaListaAtual();
+  } else if (event.target.id === 'mover-cima') {
+    moveParaCima();
+  } else if (event.target.id === 'mover-baixo') {
+    moveParaBaixo();
+  } else if (event.target.id === 'remover-selecionado') {
+    removeTarefaSelecionada();
+  } else if (event.target.classList.contains('tarefa')) {
+    selecionaTarefa(event);
+  } else {
+    // se não, descarte este evento
+    event.target.removeEventListener('click', listenerClick);
+  }
+}
+// declaração para eventos de click
+document.addEventListener('click', listenerClick);
+
+// função para evento de duplo Click
+const listenerDoubleClick = (event) => {
+  // se o alvo do duplo click for uma tarefa
+  if (event.target.classList.contains('tarefa')) {
+    // adiciona ou remove classe 'completed'
+    riscaTarefa(event);
+  } else {
+    // se não, descarte este evento
+    event.target.removeEventListener('click', listenerDoubleClick);
+  }
+}
+// declaração para eventos de duplo click
+document.addEventListener('dblclick', listenerDoubleClick);
+
+// adiciona evento de tecla 
+inputText.addEventListener('keypress', (event) => {
+  // se a tecla acionada for 'enter'
+  if (event.keyCode === 13) {
+    // adiciona tarefa
+    addTarefa();
+  }
+});
